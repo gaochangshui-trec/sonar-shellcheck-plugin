@@ -1,0 +1,3 @@
+[submodule "documentation"]
+	path = src/main/doc
+	url = https://github.com/koalaman/shellcheck.wiki.git
