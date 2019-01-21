@@ -5,7 +5,7 @@
   <groupId>com.emeraldsquad</groupId>
   <artifactId>sonar-shellcheck-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>1.0.0</version>
+  <version>${revision}</version>
 
   <name>Shellcheck Plugin for SonarQube 6.7.x LTS</name>
   <description>This plugin downloads and execute shellcheck to analyse shell scripts in the project.</description>

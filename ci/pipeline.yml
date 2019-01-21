@@ -14,6 +14,12 @@ resources:
     initial_version: 0.1.0
     git_user: "Version bumper bot<version@bumper.bot>"
     commit_message: "[ci skip] Bumping version"
+- name: release
+  type: github-release
+  source:
+    owner: emerald-squad
+    repository: sonar-shellcheck-plugin
+    access_token: ((github-access-token))
 
 jobs:
 - name: build
@@ -28,3 +34,10 @@ jobs:
   - put: version
     params:
       bump: minor
+  - put: release
+    params:
+      name: version/version
+      tag: version/version
+      tag_prefix: v
+      globs:
+      - build-output/sonar-shellcheck-plugin*.jar
