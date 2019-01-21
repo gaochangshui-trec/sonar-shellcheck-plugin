@@ -3,6 +3,7 @@ resources:
   type: git
   source:
     uri:  git@github.com:emerald-squad/sonar-shellcheck-plugin.git
+    private_key: ((github-key))
 - name: version
   type: semver
   source:
@@ -28,12 +29,12 @@ jobs:
     trigger: true
   - get: version
     params:
-      bump: minor
+      bump: patch
   - task: build
-    file: git/tasks/build.yml
+    file: git/ci/tasks/build.yml
   - put: version
     params:
-      bump: minor
+      bump: patch
   - put: release
     params:
       name: version/version
