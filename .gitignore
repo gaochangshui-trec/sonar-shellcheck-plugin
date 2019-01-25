@@ -1,3 +1,6 @@
 .idea
 target
 .scannerwork
+.classpath
+.project
+.settings/

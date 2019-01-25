@@ -6,6 +6,11 @@ image_resource:
     repository: openjdk
     tag: 8u191-alpine
 
+
+params:
+  SONARQUBE_KEY: ((sonarqube-token))
+  SONARQUBE_URL: ((sonarqube-url))
+
 inputs:
   - name: git
   - name: version
