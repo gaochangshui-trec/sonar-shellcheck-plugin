@@ -1,7 +1,6 @@
 package com.emeraldsquad.sonar.plugin.shellcheck.issues;
 
 import com.emeraldsquad.sonar.plugin.shellcheck.languages.BashLanguage;
-import org.apache.commons.io.FilenameUtils;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.config.Configuration;
@@ -38,8 +37,7 @@ public class BashIssuesFileLoaderSensor extends BashIssuesLoaderSensor {
     protected void doExecute(String reportPath) {
         if (reportPath != null) {
             LOGGER.info("Parsing file {}", reportPath);
-            File report = new File(FilenameUtils.getFullPath(reportPath), FilenameUtils.getBaseName(reportPath));
-            try (Reader shellCheckResult = new FileReader(report)) {
+            try (Reader shellCheckResult = new FileReader(reportPath)) {
                 parseAndSaveResults(shellCheckResult);
             } catch (Exception e) {
                 throw new IllegalStateException("Unable to parse the provided bash file", e);

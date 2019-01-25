@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +113,7 @@ public class BashIssueRunLoaderSensor extends BashIssuesLoaderSensor {
             }
         } else {
             try {
-                LOGGER.error("An error occured during the execution of shellcheck: \n{}", IOUtils.toString(process.getErrorStream(), "UTF-8"));
+                LOGGER.error("An error occured during the execution of shellcheck: \n{}", IOUtils.toString(process.getErrorStream(), StandardCharsets.UTF_8));
             } catch (IOException e) {
                 LOGGER.error("An error occured during the execution of shellcheck and the following exception was thrown while retrieving the error message", e);
             }
