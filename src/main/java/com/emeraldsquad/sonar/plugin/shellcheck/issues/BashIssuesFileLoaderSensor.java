@@ -36,9 +36,8 @@ public class BashIssuesFileLoaderSensor extends BashIssuesLoaderSensor {
     @Override
     protected void doExecute(String reportPath) {
         if (reportPath != null) {
-            File analysisResultsFile = new File(reportPath);
-            LOGGER.info("Parsing file {}", analysisResultsFile.getAbsolutePath());
-            try (Reader shellCheckResult = new FileReader(analysisResultsFile)) {
+            LOGGER.info("Parsing file {}", reportPath);
+            try (Reader shellCheckResult = new FileReader(reportPath)) {
                 parseAndSaveResults(shellCheckResult);
             } catch (Exception e) {
                 throw new IllegalStateException("Unable to parse the provided bash file", e);

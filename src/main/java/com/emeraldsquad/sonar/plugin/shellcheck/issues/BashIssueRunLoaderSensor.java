@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
@@ -85,8 +86,9 @@ public class BashIssueRunLoaderSensor extends BashIssuesLoaderSensor {
             command.add("json");
 
             fileSystem.inputFiles(filePredicate).forEach((InputFile f) -> {
-                File file = new File(f.uri());
-                command.add(fileSystem.baseDir().toPath().relativize(file.toPath()).toString());
+                Path baseDir = fileSystem.baseDir().toPath();
+                Path file = baseDir.resolve(f.uri().getPath());
+                command.add(baseDir.relativize(file).toString());
             });
 
             LOGGER.info("Starting process : {}", String.join(" ", command));
