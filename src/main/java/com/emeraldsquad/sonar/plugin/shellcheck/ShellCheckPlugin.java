@@ -49,10 +49,10 @@ public class ShellCheckPlugin implements Plugin {
     context.addExtension(LineOfCodeSensor.class);
 
     context.addExtensions(asList(
-      PropertyDefinition.builder("sonar.bash.file.suffixes")
-        .name("Suffixes bash")
+      PropertyDefinition.builder("sonar.shell.file.suffixes")
+        .name("Shell suffixes")
         .description("Suffixes supported by shellcheck")
-        .category("Bash")
+        .category("Shell scripts")
         .type(PropertyType.STRING)
         .build()));
   }

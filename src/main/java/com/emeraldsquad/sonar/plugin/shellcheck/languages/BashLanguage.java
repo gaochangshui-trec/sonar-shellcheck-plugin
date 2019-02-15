@@ -32,8 +32,8 @@ import java.util.List;
  */
 public final class BashLanguage extends AbstractLanguage {
 
-  public static final String NAME = "Bash";
-  public static final String KEY = "bash";
+  public static final String NAME = "Shell scripts";
+  public static final String KEY = "shell";
 
   private final Configuration config;
 
@@ -44,21 +44,10 @@ public final class BashLanguage extends AbstractLanguage {
 
   @Override
   public String[] getFileSuffixes() {
-    String[] suffixes = filterEmptyStrings(config.getStringArray(BashLanguageProperties.FILE_SUFFIXES_KEY));
-    if (suffixes.length == 0) {
-      suffixes = StringUtils.split(BashLanguageProperties.FILE_SUFFIXES_DEFAULT_VALUE, ",");
-    }
-    return suffixes;
-  }
+    String suffixes = config.get(BashLanguageProperties.FILE_SUFFIXES_KEY)
+      .orElse(BashLanguageProperties.FILE_SUFFIXES_DEFAULT_VALUE);
 
-  private String[] filterEmptyStrings(String[] stringArray) {
-    List<String> nonEmptyStrings = new ArrayList<>();
-    for (String string : stringArray) {
-      if (StringUtils.isNotBlank(string.trim())) {
-        nonEmptyStrings.add(string.trim());
-      }
-    }
-    return nonEmptyStrings.toArray(new String[nonEmptyStrings.size()]);
+    return StringUtils.split(suffixes, ",");
   }
 
   @Override

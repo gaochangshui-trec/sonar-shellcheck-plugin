@@ -30,9 +30,9 @@ public class BashRulesDefinitionTest {
         BashRulesDefinition rules = new BashRulesDefinition();
         RulesDefinition.Context context = new RulesDefinition.Context();
         rules.define(context);
-        RulesDefinition.Repository repository = context.repository("bash-shellcheck");
+        RulesDefinition.Repository repository = context.repository("shell-shellcheck");
         assertThat(repository.name()).isEqualTo("Shellcheck rules");
-        assertThat(repository.language()).isEqualTo("bash");
+        assertThat(repository.language()).isEqualTo("shell");
         assertThat(repository.rules()).hasSize(2);
     }
 }

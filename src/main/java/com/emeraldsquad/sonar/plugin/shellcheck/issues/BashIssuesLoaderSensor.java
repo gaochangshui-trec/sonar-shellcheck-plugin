@@ -48,7 +48,7 @@ public abstract class BashIssuesLoaderSensor implements Sensor {
 
   private static final Logger LOGGER = Loggers.get(BashIssuesLoaderSensor.class);
 
-  protected static final String REPORT_PATH_KEY = "sonar.bash.reportPath";
+  protected static final String REPORT_PATH_KEY = "sonar.shellcheck.reportPath";
 
   protected final Configuration config;
   protected final FileSystem fileSystem;
