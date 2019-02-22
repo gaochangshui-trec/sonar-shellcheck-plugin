@@ -30,9 +30,11 @@ import java.util.Collection;
  */
 public final class BashQualityProfile implements BuiltInQualityProfilesDefinition {
 
+  public static final String PROFILE_NAME = "Shellcheck rules";
+
   @Override
   public void define(Context context) {
-    NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile("Bash Rules", BashLanguage.KEY);
+    NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile(PROFILE_NAME, BashLanguage.KEY);
     profile.setDefault(true);
 
     Collection<String> ruleDocs = ResourceList.getDocList();

@@ -47,13 +47,4 @@ public final class BashLanguage extends AbstractLanguage {
     return StringUtils.split(suffixes, ",");
   }
 
-  @Override
-  public boolean equals(Object o) {
-    return super.equals(o);
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
 }
