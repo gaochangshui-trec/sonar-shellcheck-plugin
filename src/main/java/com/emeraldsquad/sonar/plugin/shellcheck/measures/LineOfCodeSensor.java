@@ -82,8 +82,8 @@ public class LineOfCodeSensor implements Sensor {
                             counters.get(CounterType.COMMENT).getAndIncrement();
                         } else {
                             counters.get(CounterType.CODE).getAndIncrement();
-                            if (line.matches("^\\s*\\w+\\(\\)\\s*\\{")
-                                    || line.matches("^\\s*function\\s+\\w+\\s*\\{")) {
+                            if (line.matches("^\\s*\\w+\\s*\\(\\s*\\)\\s*\\{?")
+                                    || line.matches("^\\s*function\\s+\\w+\\s*\\{?")) {
                                 counters.get(CounterType.FUNCTION).getAndIncrement();
                             }
                         }

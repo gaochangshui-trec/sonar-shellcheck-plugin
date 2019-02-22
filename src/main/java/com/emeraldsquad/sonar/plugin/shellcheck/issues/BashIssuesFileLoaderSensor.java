@@ -7,7 +7,6 @@ import org.sonar.api.config.Configuration;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 

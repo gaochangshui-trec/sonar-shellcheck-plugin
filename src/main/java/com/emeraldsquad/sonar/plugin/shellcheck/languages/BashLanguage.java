@@ -24,9 +24,6 @@ import org.apache.commons.lang.StringUtils;
 import org.sonar.api.config.Configuration;
 import org.sonar.api.resources.AbstractLanguage;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This class defines th bash language
  */
