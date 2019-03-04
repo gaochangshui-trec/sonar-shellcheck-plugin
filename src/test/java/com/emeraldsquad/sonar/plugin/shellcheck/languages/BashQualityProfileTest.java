@@ -1,17 +1,5 @@
 package com.emeraldsquad.sonar.plugin.shellcheck.languages;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.sonar.api.SonarQubeSide;
-import org.sonar.api.SonarRuntime;
-import org.sonar.api.internal.SonarRuntimeImpl;
-import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
-import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition.BuiltInQualityProfile;
-import org.sonar.api.utils.ValidationMessages;
-import org.sonar.api.utils.Version;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -20,6 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.emeraldsquad.sonar.plugin.shellcheck.utils.ResourceList;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
+import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition.BuiltInQualityProfile;
+import org.sonar.api.utils.ValidationMessages;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest( { ResourceList.class })

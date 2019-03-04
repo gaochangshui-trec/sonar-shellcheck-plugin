@@ -19,18 +19,18 @@
  */
 package com.emeraldsquad.sonar.plugin.shellcheck;
 
+import static java.util.Arrays.asList;
+
+import com.emeraldsquad.sonar.plugin.shellcheck.issues.BashIssuesLoaderSensor;
 import com.emeraldsquad.sonar.plugin.shellcheck.languages.BashLanguage;
 import com.emeraldsquad.sonar.plugin.shellcheck.languages.BashQualityProfile;
 import com.emeraldsquad.sonar.plugin.shellcheck.measures.LineOfCodeSensor;
-import com.emeraldsquad.sonar.plugin.shellcheck.issues.BashIssueRunLoaderSensor;
-import com.emeraldsquad.sonar.plugin.shellcheck.issues.BashIssuesFileLoaderSensor;
 import com.emeraldsquad.sonar.plugin.shellcheck.rules.BashRulesDefinition;
 import com.emeraldsquad.sonar.plugin.shellcheck.settings.BashLanguageProperties;
+
 import org.sonar.api.Plugin;
 import org.sonar.api.PropertyType;
 import org.sonar.api.config.PropertyDefinition;
-
-import static java.util.Arrays.asList;
 
 /**
  * This class is the entry point for all extensions. It is referenced in pom.xml.
@@ -45,7 +45,7 @@ public class ShellCheckPlugin implements Plugin {
     context.addExtension(BashLanguageProperties.getProperties());
 
     // tutorial on rules
-    context.addExtensions(BashRulesDefinition.class, BashIssueRunLoaderSensor.class, BashIssuesFileLoaderSensor.class);
+    context.addExtensions(BashRulesDefinition.class, BashIssuesLoaderSensor.class);
     context.addExtension(LineOfCodeSensor.class);
 
     context.addExtensions(asList(

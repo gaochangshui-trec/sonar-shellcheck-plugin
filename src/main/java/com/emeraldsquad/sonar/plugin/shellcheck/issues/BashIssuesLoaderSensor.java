@@ -19,14 +19,22 @@
  */
 package com.emeraldsquad.sonar.plugin.shellcheck.issues;
 
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.Optional;
+
+import com.emeraldsquad.sonar.plugin.shellcheck.languages.BashLanguage;
 import com.emeraldsquad.sonar.plugin.shellcheck.rules.BashRulesDefinition;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.rule.Severity;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
+import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.config.Configuration;
@@ -34,17 +42,13 @@ import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
-import java.io.Reader;
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.Optional;
-
 /**
- * The goal of this Sensor is to load the results of an analysis performed by a fictive external tool named: FooLint
- * Results are provided as an xml file and are corresponding to the rules defined in 'rules.xml'.
- * To be very abstract, these rules are applied on source files made with the fictive language Foo.
+ * The goal of this Sensor is to load the results of an analysis performed by a
+ * fictive external tool named: FooLint Results are provided as an xml file and
+ * are corresponding to the rules defined in 'rules.xml'. To be very abstract,
+ * these rules are applied on source files made with the fictive language Foo.
  */
-public abstract class BashIssuesLoaderSensor implements Sensor {
+public class BashIssuesLoaderSensor implements Sensor {
 
   private static final Logger LOGGER = Loggers.get(BashIssuesLoaderSensor.class);
 
@@ -76,66 +80,75 @@ public abstract class BashIssuesLoaderSensor implements Sensor {
 
   @Override
   public void execute(final SensorContext context) {
-      this.context = context;
+    this.context = context;
     String reportPath = getReportPath();
-    doExecute(reportPath);
-  }
 
-  protected abstract void doExecute(String reportPath);
-
-  protected void parseAndSaveResults(final Reader shellCheckResult) {
-    LOGGER.info("Parsing 'Shellcheck' Analysis Results");
-    BashAnalysisResultsParser parser = new BashAnalysisResultsParser();
-    Collection<ErrorDataFromExternalLinter> errors = parser.parse(shellCheckResult);
-    for (ErrorDataFromExternalLinter error : errors) {
-      getResourceAndSaveIssue(error);
+    IssuesFetcher fetcher = null;
+    if (reportPath == null) {
+      fetcher = new TaskRunnerFetcher(context.fileSystem());
+    } else {
+      fetcher = new OfflineFetcher(reportPath);
     }
+
+    try (Reader shellCheckResult = fetcher.fetchReport()) {
+      LOGGER.info("Parsing 'Shellcheck' Analysis Results");
+      BashAnalysisResultsParser parser = new BashAnalysisResultsParser();
+      Collection<ErrorDataFromExternalLinter> errors = parser.parse(shellCheckResult);
+      for (ErrorDataFromExternalLinter error : errors) {
+        getResourceAndSaveIssue(error);
+      }
+    } catch (Exception e) {
+      LOGGER.error("An error occured while analysing your script files", e);
+    }
+
   }
 
   private void getResourceAndSaveIssue(final ErrorDataFromExternalLinter error) {
     LOGGER.debug(error.toString());
 
-    InputFile inputFile = fileSystem.inputFile(
-      fileSystem.predicates().and(
-        fileSystem.predicates().hasRelativePath(error.getFile()),
-        fileSystem.predicates().hasType(InputFile.Type.MAIN)));
+    InputFile inputFile = fileSystem
+        .inputFile(fileSystem.predicates().and(fileSystem.predicates().hasRelativePath(error.getFile()),
+            fileSystem.predicates().hasType(InputFile.Type.MAIN)));
 
     LOGGER.debug("inputFile null ? " + (inputFile == null));
 
     Severity severity = null;
     switch (error.getLevel()) {
-        case "info": severity = Severity.INFO;
-             break;
-        case "style": severity = Severity.MINOR;
-             break;
-        case "warning": severity = Severity.MAJOR;
-             break;
-        case "error": severity = Severity.CRITICAL;
-             break;
-        default: severity = Severity.MINOR;
+    case "info":
+      severity = Severity.INFO;
+      break;
+    case "style":
+      severity = Severity.MINOR;
+      break;
+    case "warning":
+      severity = Severity.MAJOR;
+      break;
+    case "error":
+      severity = Severity.CRITICAL;
+      break;
+    default:
+      severity = Severity.MINOR;
     }
 
     if (inputFile != null) {
-        String ruleKey = "SC" + error.getCode();
-        saveIssue(inputFile, error.getLine(), error.getColumn(), ruleKey, severity, error.getMessage());
+      String ruleKey = "SC" + error.getCode();
+      saveIssue(inputFile, error.getLine(), error.getColumn(), ruleKey, severity, error.getMessage());
     } else {
       LOGGER.error("Not able to find a InputFile with " + error.getFile());
     }
   }
 
-  private void saveIssue(final InputFile inputFile, int line, int column, final String externalRuleKey, Severity severity, final String message) {
+  private void saveIssue(final InputFile inputFile, int line, int column, final String externalRuleKey,
+      Severity severity, final String message) {
     String languageKey = inputFile.language();
 
     if (languageKey != null) {
 
       RuleKey ruleKey = RuleKey.of(getRepositoryKeyForLanguage(languageKey), externalRuleKey);
 
-      NewIssue newIssue = context.newIssue()
-              .forRule(ruleKey);
+      NewIssue newIssue = context.newIssue().forRule(ruleKey);
 
-      NewIssueLocation primaryLocation = newIssue.newLocation()
-              .on(inputFile)
-              .message(message);
+      NewIssueLocation primaryLocation = newIssue.newLocation().on(inputFile).message(message);
 
       if (line > 0 && column > 0) {
         primaryLocation.at(inputFile.newRange(line, column - 1, line, column));
@@ -171,15 +184,6 @@ public abstract class BashIssuesLoaderSensor implements Sensor {
     private int code;
     private String message;
 
-    public ErrorDataFromExternalLinter(String file, int line, int column, String level, int code, String message) {
-      this.file = file;
-      this.line = line;
-      this.column = column;
-      this.level = level;
-      this.code = code;
-      this.message = message;
-    }
-
     public String getFile() {
       return file;
     }
@@ -206,26 +210,26 @@ public abstract class BashIssuesLoaderSensor implements Sensor {
 
     @Override
     public String toString() {
-      return "ErrorDataFromExternalLinter{" +
-              "file='" + file + '\'' +
-              ", line=" + line +
-              ", column=" + column +
-              ", level='" + level + '\'' +
-              ", code=" + code +
-              ", message='" + message + '\'' +
-              '}';
+      return "ErrorDataFromExternalLinter{" + "file='" + file + '\'' + ", line=" + line + ", column=" + column
+          + ", level='" + level + '\'' + ", code=" + code + ", message='" + message + '\'' + '}';
     }
   }
 
   private class BashAnalysisResultsParser {
 
     public Collection<ErrorDataFromExternalLinter> parse(final Reader shellCheckResult) {
-        Gson gson = new Gson();
-        Type errorListType = new TypeToken<Collection<ErrorDataFromExternalLinter>>() {
-        }.getType();
+      Gson gson = new Gson();
+      Type errorListType = new TypeToken<Collection<ErrorDataFromExternalLinter>>() {
+      }.getType();
 
-        return gson.fromJson(shellCheckResult, errorListType);
+      return gson.fromJson(shellCheckResult, errorListType);
     }
+  }
+
+  @Override
+  public void describe(SensorDescriptor descriptor) {
+    descriptor.name("Shellcheck report importer");
+    descriptor.onlyOnLanguage(BashLanguage.KEY);
   }
 
 }

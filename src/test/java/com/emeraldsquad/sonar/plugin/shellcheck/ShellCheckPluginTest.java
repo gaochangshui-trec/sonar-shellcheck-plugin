@@ -20,7 +20,7 @@ public class ShellCheckPluginTest {
         SonarRuntime runtime = SonarRuntimeImpl.forSonarLint(VERSION_6_7);
         Plugin.Context context = new Plugin.Context(runtime);
         shellCheckPlugin.define(context);
-        assertThat(context.getExtensions()).hasSize(8);
+        assertThat(context.getExtensions()).hasSize(7);
     }
 
     @Test
@@ -28,7 +28,7 @@ public class ShellCheckPluginTest {
         SonarRuntime runtime = SonarRuntimeImpl.forSonarLint(VERSION_7_2);
         Plugin.Context context = new Plugin.Context(runtime);
         shellCheckPlugin.define(context);
-        assertThat(context.getExtensions()).hasSize(8);
+        assertThat(context.getExtensions()).hasSize(7);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class ShellCheckPluginTest {
         SonarRuntime runtime = SonarRuntimeImpl.forSonarLint(VERSION_7_4);
         Plugin.Context context = new Plugin.Context(runtime);
         shellCheckPlugin.define(context);
-        assertThat(context.getExtensions()).hasSize(8);
+        assertThat(context.getExtensions()).hasSize(7);
     }
 
 }
