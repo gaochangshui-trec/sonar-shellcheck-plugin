@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,9 +37,11 @@ public class BashIssuesLoaderSensorTest {
   private File baseDir = new File(new File("").getAbsolutePath());
   private SensorContextTester context = SensorContextTester.create(baseDir);
 
-  private BashIssuesLoaderSensor createSensor() {
+  private BashIssuesLoaderSensor createSensor(boolean withReport) {
     MapSettings settings = new MapSettings();
-    settings.setProperty(BashIssuesLoaderSensor.REPORT_PATH_KEY, "src/test/resources/sensor/report.json");
+    if (withReport) {
+      settings.setProperty(BashIssuesLoaderSensor.REPORT_PATH_KEY, "src/test/resources/sensor/report.json");
+    }
     FileSystem fs = context.fileSystem();
     return new BashIssuesLoaderSensor(settings.asConfig(), fs);
   }
@@ -54,7 +57,7 @@ public class BashIssuesLoaderSensorTest {
   public void should_contain_sensor_descriptor() {
     DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
 
-    createSensor().describe(descriptor);
+    createSensor(true).describe(descriptor);
     assertThat(descriptor.name()).isEqualTo("Shellcheck report importer");
     assertThat(descriptor.languages()).containsOnly("shell");
     assertThat(descriptor.type()).isEqualTo(Type.MAIN);
@@ -63,7 +66,14 @@ public class BashIssuesLoaderSensorTest {
   @Test
   public void should_analyse() throws IOException {
     TestUtils.addInputFile("src/test/resources/sensor/bad.sh", context, baseDir);
-    createSensor().execute(context);
+    createSensor(true).execute(context);
+    assertThat(context.allIssues().size()).isEqualTo(3);
+  }
+
+  @Test
+  public void should_run_and_analyse() throws IOException {
+    TestUtils.addInputFile("src/test/resources/sensor/bad.sh", context, baseDir);
+    createSensor(false).execute(context);
     assertThat(context.allIssues().size()).isEqualTo(3);
   }
 
