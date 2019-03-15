@@ -7,7 +7,7 @@ This plugin will add the shell language to your Sonarqube installation, with the
 
 ## Installation
 
-Just copy the jar file to your $SONAR_HOME/extensions/plugins
+Just copy the jar file to your `$SONAR_HOME/extensions/plugins`
 
 ## Configuration
 

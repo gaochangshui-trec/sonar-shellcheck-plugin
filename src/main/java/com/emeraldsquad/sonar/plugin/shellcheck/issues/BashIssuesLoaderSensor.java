@@ -228,8 +228,9 @@ public class BashIssuesLoaderSensor implements Sensor {
 
   @Override
   public void describe(SensorDescriptor descriptor) {
-    descriptor.name("Shellcheck report importer");
-    descriptor.onlyOnLanguage(BashLanguage.KEY);
+    descriptor.name("Shellcheck report importer")
+      .onlyOnLanguage(BashLanguage.KEY)
+      .onlyOnFileType(InputFile.Type.MAIN);
   }
 
 }

@@ -7,7 +7,7 @@
   <packaging>sonar-plugin</packaging>
   <version>${revision}</version>
 
-  <name>Shellcheck Plugin for SonarQube 6.7.x LTS</name>
+  <name>Shellcheck Plugin for SonarQube</name>
   <description>This plugin downloads and execute shellcheck to analyse shell scripts in the project.</description>
 
   <properties>

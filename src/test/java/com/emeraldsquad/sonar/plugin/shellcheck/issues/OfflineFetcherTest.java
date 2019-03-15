@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.FileReader;
 import java.io.Reader;
-import java.io.StringWriter;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
