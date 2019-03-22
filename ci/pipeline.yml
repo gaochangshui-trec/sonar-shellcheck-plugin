@@ -28,13 +28,8 @@ jobs:
   - get: git
     trigger: true
   - get: version
-    params:
-      bump: patch
   - task: build
     file: git/ci/tasks/build.yml
-  - put: version
-    params:
-      bump: patch
   - put: release
     params:
       name: version/version
@@ -42,3 +37,17 @@ jobs:
       tag_prefix: v
       globs:
       - build-output/sonar-shellcheck-plugin*.jar
+  - put: version
+    params:
+      bump: patch
+- name: bump-minor
+  plan:
+    - get: version
+      params: {bump: minor}
+    - {put: version, params: {file: version/number}}
+
+- name: bump-major
+  plan:
+    - get: version
+      params: {bump: major}
+    - {put: version, params: {file: version/number}}
