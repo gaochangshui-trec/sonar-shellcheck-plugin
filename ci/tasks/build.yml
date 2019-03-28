@@ -8,8 +8,7 @@ image_resource:
 
 
 params:
-  SONARQUBE_KEY: ((sonarqube-token))
-  SONARQUBE_URL: ((sonarqube-url))
+  SONARCLOUD_KEY: ((sonarcloud-token))
 
 inputs:
   - name: git
