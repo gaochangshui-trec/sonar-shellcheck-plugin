@@ -132,13 +132,15 @@ public class BashIssuesLoaderSensor implements Sensor {
 
     if (inputFile != null) {
       String ruleKey = "SC" + error.getCode();
-      saveIssue(inputFile, error.getLine(), error.getColumn(), ruleKey, severity, error.getMessage());
+      saveIssue(inputFile, error.getLine(), error.getColumn(), error.getEndLine(), error.getEndColumn(),
+        ruleKey, severity, error.getMessage());
     } else {
       LOGGER.error("Not able to find a InputFile with " + error.getFile());
     }
   }
 
-  private void saveIssue(final InputFile inputFile, int line, int column, final String externalRuleKey,
+  private void saveIssue(final InputFile inputFile, int line, int column, 
+      int endLine, int endColumn, final String externalRuleKey,
       Severity severity, final String message) {
     String languageKey = inputFile.language();
 
@@ -150,8 +152,15 @@ public class BashIssuesLoaderSensor implements Sensor {
 
       NewIssueLocation primaryLocation = newIssue.newLocation().on(inputFile).message(message);
 
+      if (endLine < line) {
+        endLine = line;
+      }
+      if (endColumn <= column) {
+        endColumn = column + 1;
+      }
+
       if (line > 0 && column > 0) {
-        primaryLocation.at(inputFile.newRange(line, column - 1, line, column));
+        primaryLocation.at(inputFile.newRange(line, column - 1, endLine, endColumn - 1));
       } else if (line > 0) {
         primaryLocation.at(inputFile.selectLine(line));
       }
@@ -179,7 +188,9 @@ public class BashIssuesLoaderSensor implements Sensor {
 
     private String file;
     private int line;
+    private int endLine;
     private int column;
+    private int endColumn;
     private String level;
     private int code;
     private String message;
@@ -192,8 +203,16 @@ public class BashIssuesLoaderSensor implements Sensor {
       return line;
     }
 
+    public int getEndLine() {
+      return endLine;
+    }
+
     public int getColumn() {
       return column;
+    }
+
+    public int getEndColumn() {
+      return endColumn;
     }
 
     public String getLevel() {

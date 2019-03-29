@@ -37,11 +37,11 @@ public class TaskRunnerFetcher implements IssuesFetcher {
 
     private static final Logger LOGGER = Loggers.get(TaskRunnerFetcher.class);
 
-    private static final String URL_LINUX = "https://shellcheck.storage.googleapis.com/shellcheck-v0.5.0.linux.x86_64.tar.xz";
-    private static final String SHA_LINUX = "475e14bf2705ad4a16d405fa64b94c2eb151a914d5a165ce13e8f9344e6145893f685a650cd32d45a7ab236dedf55f76b31db82e2ef76ad6175a87dd89109790";
+    private static final String URL_LINUX = "https://shellcheck.storage.googleapis.com/shellcheck-v0.6.0.linux.x86_64.tar.xz";
+    private static final String SHA_LINUX = "d88733e95aea8e970c373a3f677a3eb272f14c12d3e9c93f81463b5fe406b43acdd3046d10c092f40c070a96a5fac1cf7e18b35ed790d76ecced6af32e2c8a85";
 
-    private static final String URL_WINDOWS = "https://shellcheck.storage.googleapis.com/shellcheck-v0.5.0.zip";
-    private static final String SHA_WINDOWS = "5e1cd46b052f5669a021cd308daacf1221fd314964ceb96fd494c806e7620eba86bc32dcf5e3b9959904b374cce809b90e43fbc4df7e0f6289adf42ea1956465";
+    private static final String URL_WINDOWS = "https://shellcheck.storage.googleapis.com/shellcheck-v0.6.0.zip";
+    private static final String SHA_WINDOWS = "2d8171e79cafeeaefd1dc3be30cf44f8c3f2df0f18f6b54d4a028ab26c5159e07c9a1f0bc67603d1ae52bc2ba8d337df596079fec28bf1258255956bb552ce53";
 
     private final FileSystem fileSystem;
 

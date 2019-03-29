@@ -1,4 +1,5 @@
 # Sonarqube plugin for Sellcheck
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=emerald-squad_sonar-shellcheck-plugin&metric=alert_status)](https://sonarcloud.io/dashboard?id=emerald-squad_sonar-shellcheck-plugin)
 
 This plugin will add the shell language to your Sonarqube installation, with the followinf benefits :
 

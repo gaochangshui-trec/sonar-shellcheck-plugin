@@ -40,7 +40,7 @@ public class BashIssuesLoaderSensorTest {
   private BashIssuesLoaderSensor createSensor(boolean withReport) {
     MapSettings settings = new MapSettings();
     if (withReport) {
-      settings.setProperty(BashIssuesLoaderSensor.REPORT_PATH_KEY, "src/test/resources/sensor/report.json");
+      settings.setProperty(BashIssuesLoaderSensor.REPORT_PATH_KEY, "src/test/resources/sensor/allcases.json");
     }
     FileSystem fs = context.fileSystem();
     return new BashIssuesLoaderSensor(settings.asConfig(), fs);
@@ -67,7 +67,7 @@ public class BashIssuesLoaderSensorTest {
   public void should_analyse() throws IOException {
     TestUtils.addInputFile("src/test/resources/sensor/bad.sh", context, baseDir);
     createSensor(true).execute(context);
-    assertThat(context.allIssues().size()).isEqualTo(3);
+    assertThat(context.allIssues().size()).isEqualTo(4);
   }
 
   @Test
