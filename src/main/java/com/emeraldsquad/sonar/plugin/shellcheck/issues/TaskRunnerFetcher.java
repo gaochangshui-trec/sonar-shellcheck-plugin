@@ -26,7 +26,7 @@ import org.apache.commons.compress.compressors.CompressorException;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
@@ -37,11 +37,11 @@ public class TaskRunnerFetcher implements IssuesFetcher {
 
     private static final Logger LOGGER = Loggers.get(TaskRunnerFetcher.class);
 
-    private static final String URL_LINUX = "https://shellcheck.storage.googleapis.com/shellcheck-v0.6.0.linux.x86_64.tar.xz";
-    private static final String SHA_LINUX = "d88733e95aea8e970c373a3f677a3eb272f14c12d3e9c93f81463b5fe406b43acdd3046d10c092f40c070a96a5fac1cf7e18b35ed790d76ecced6af32e2c8a85";
+    private static final String URL_LINUX = "https://shellcheck.storage.googleapis.com/shellcheck-v0.7.0.linux.x86_64.tar.xz";
+    private static final String SHA_LINUX = "84e06bee3c8b8c25f46906350fb32708f4b661636c04e55bd19cdd1071265112d84906055372149678d37f09a1667019488c62a0561b81fe6a6b45ad4fae4ac0";
 
-    private static final String URL_WINDOWS = "https://shellcheck.storage.googleapis.com/shellcheck-v0.6.0.zip";
-    private static final String SHA_WINDOWS = "2d8171e79cafeeaefd1dc3be30cf44f8c3f2df0f18f6b54d4a028ab26c5159e07c9a1f0bc67603d1ae52bc2ba8d337df596079fec28bf1258255956bb552ce53";
+    private static final String URL_WINDOWS = "https://shellcheck.storage.googleapis.com/shellcheck-v0.7.0.zip";
+    private static final String SHA_WINDOWS = "10ee2474845eeb76d8a13992457472b723edf470c7cf182a20b32ecee4ad009ec6b2ca542db8f66127cf19e24baf3a06838a0d101494a5a6c11b3b568f9f5a99";
 
     private final FileSystem fileSystem;
 

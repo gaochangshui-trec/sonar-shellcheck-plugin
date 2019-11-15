@@ -19,7 +19,7 @@ Just copy the jar file to your `$SONAR_HOME/extensions/plugins`
 This plugin will download a specific version of shellcheck, extract it and run it on the machine that runs the sonarqube scanner.
 
 If this is unaceptable for any reason, you can run shellcheck yourself before starting sonar scanner. To do so, you must run shellcheck
-from your project root directory and save a json-formatted repport to a file, as so :
+from your project root directory and save a json-formatted report to a file, as so :
 
 ```bash
 shellcheck -f json [path/to/file1] [path/to/file2] ... [path/to/fileN] > shellcheck-report.json
@@ -28,7 +28,7 @@ shellcheck -f json [path/to/file1] [path/to/file2] ... [path/to/fileN] > shellch
 Then, you must include the report in your `sonar-project.properties` file:
 
 ```
-sonar.shellcheck.reportPath=shellcheck-repport.json
+sonar.shellcheck.reportPath=shellcheck-report.json
 ```
 
 ## Credits

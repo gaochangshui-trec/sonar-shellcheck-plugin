@@ -9,7 +9,7 @@ export MAVEN_ARGS
 
 (
     cd git
-    ./mvnw org.jacoco:jacoco-maven-plugin:prepare-agent  install -Dmaven.test.failure.ignore=false $MAVEN_ARGS
+    ./mvnw install -Dmaven.test.failure.ignore=false $MAVEN_ARGS
     ./mvnw sonar:sonar $MAVEN_ARGS \
         -Dsonar.projectKey=emerald-squad_sonar-shellcheck-plugin \
         -Dsonar.organization=emerald-squad \

@@ -20,7 +20,7 @@
 package com.emeraldsquad.sonar.plugin.shellcheck.languages;
 
 import com.emeraldsquad.sonar.plugin.shellcheck.settings.BashLanguageProperties;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.sonar.api.config.Configuration;
 import org.sonar.api.resources.AbstractLanguage;
 
