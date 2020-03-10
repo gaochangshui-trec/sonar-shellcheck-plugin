@@ -31,6 +31,14 @@ Then, you must include the report in your `sonar-project.properties` file:
 sonar.shellcheck.reportPath=shellcheck-report.json
 ```
 
+## Usage behind a proxy
+
+Since the default behavior is to download shellcheck from the internet, you may need to configure a proxy with sonar-scanner. To do so, you can use the `SONAR_SCANNER_OPTS`environment variable to set proxy settings in the JVM.
+
+```bash
+export SONAR_SCANNER_OPTS="-Dhttps.proxyHost=<host> -Dhttps.proxyPort=<port>"
+```
+
 ## Credits
 
 All the magic is done by [the shellcheck tool](https://github.com/koalaman/shellcheck). This plugin only imports shellcheck repports into sonarqube.
